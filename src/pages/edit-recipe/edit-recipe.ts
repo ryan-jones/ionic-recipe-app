@@ -4,7 +4,8 @@ import {
   NavController,
   NavParams,
   ActionSheetController,
-  AlertController
+  AlertController,
+  ToastController
 } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -20,7 +21,8 @@ export class EditRecipePage implements OnInit {
   constructor(
     public navParams: NavParams,
     private actionCtrl: ActionSheetController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -52,14 +54,21 @@ export class EditRecipePage implements OnInit {
         {
           text: 'Remove all ingredients',
           handler: () => {
-            const formArray: FormArray = <FormArray>this.recipeForm.get('ingredients');
+            const formArray: FormArray = <FormArray>this.recipeForm.get(
+              'ingredients'
+            );
             const len = formArray.length;
             if (len > 0) {
               for (let i = len; i >= 0; i--) {
                 formArray.removeAt(i);
               }
             }
-
+            const toast = this.toastCtrl.create({
+              message: 'All Ingredients Deleted',
+              duration: 2000,
+              position: 'top'
+            });
+            toast.present();
           },
           role: 'destructive'
         },
@@ -89,14 +98,25 @@ export class EditRecipePage implements OnInit {
         {
           text: 'Add',
           handler: data => {
-            if (!data.name || data.name.trim() === '') {
-              return;
+            if (!data.name.trim()) {
+              const toast = this.toastCtrl.create({
+                message: 'Please enter a valid value',
+                duration: 2000,
+                position: 'top'
+              });
+              toast.present();
+            } else {
+              (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required));
+              const toast = this.toastCtrl.create({
+                message: 'Item added!',
+                duration: 2000,
+                position: 'bottom'
+              });
+              toast.present();
             }
-            (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required))
           }
         }
       ]
     });
-
   }
 }
