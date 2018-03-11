@@ -3,21 +3,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
+
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
+import { RecipePage } from '../pages/recipe/recipe';
+import { RecipesListPage } from '../pages/recipes-list/recipes-list';
+import { EditRecipePage } from '../pages/edit-recipe/edit-recipe';
+import { ShoppingListService } from '../services/shopping-list.service';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    TabsPage,
+    ShoppingListPage,
+    RecipePage,
+    RecipesListPage,
+    EditRecipePage
   ],
   imports: [
     BrowserModule,
@@ -26,14 +30,16 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    TabsPage,
+    ShoppingListPage,
+    RecipePage,
+    RecipesListPage,
+    EditRecipePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    ShoppingListService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

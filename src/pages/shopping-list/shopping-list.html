@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Shopping List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #f="ngForm" (ngSubmit)="onAddItem(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Name: </ion-label>
+        <ion-input type="text" name="ingredientName" ngModel required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Amount: </ion-label>
+        <ion-input type="number" name="ingredientAmount" ngModel required></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button block type="submit" [disabled]="!f.valid">
+      Add item
+    </button>
+  </form>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of shoppingListItems, let i = index">
+      <ion-item>
+        <h3>{{ item.name }} ({{ item.amount }})</h3>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="danger" (click)="onDelete(i)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+</ion-content>
