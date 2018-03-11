@@ -11,6 +11,6 @@ export class RecipesListPage {
   constructor(public navCtrl: NavController) {}
 
   onNewRecipe() {
-    this.navCtrl.push(EditRecipePage, { mode: 'new'});
+    this.navCtrl.push(EditRecipePage, { mode: 'New'});
   }
 }
