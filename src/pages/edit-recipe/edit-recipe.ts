@@ -17,11 +17,12 @@ import { Recipe } from '../../models/recipes.model';
   templateUrl: 'edit-recipe.html'
 })
 export class EditRecipePage implements OnInit {
-  private mode = 'New';
   private recipe: Recipe;
   private index: number
+  private mode = 'New';
   private difficulties = ['Easy', 'Medium', 'Hard'];
   private recipeForm: FormGroup;
+
   constructor(
     public navParams: NavParams,
     public navCtrl: NavController,
@@ -34,8 +35,7 @@ export class EditRecipePage implements OnInit {
   ngOnInit() {
     this.mode = this.navParams.get('mode');
     if (this.mode === 'Edit') {
-      this.recipe = this.navParams.get('recipe');
-      this.index = this.navParams.get('index');
+      [this.recipe, this.index] = [this.navParams.get('recipe'), this.navParams.get('index')];
     }
     this.initializeForm();
   }
@@ -50,9 +50,7 @@ export class EditRecipePage implements OnInit {
       title = this.recipe.title;
       description = this.recipe.description;
       difficulty = this.recipe.difficulty;
-      this.recipe.ingredients.forEach(ingredient => {
-        ingredients.push(new FormControl(ingredient.name, Validators.required))
-      })
+      this.recipe.ingredients.forEach(ingredient => ingredients.push(new FormControl(ingredient.name, Validators.required)))
     }
     this.recipeForm = new FormGroup({
       title: new FormControl(title, Validators.required),
@@ -65,7 +63,12 @@ export class EditRecipePage implements OnInit {
   private onSubmit() {
     const value = this.recipeForm.value;
     const ingredients = value.ingredients.length ? value.ingredients.map(name => ({ name: name, amount: 1 })) : [];
-    this.recipesService.addRecipe(value.title, value.description, value.difficulty, ingredients);
+    this.mode === 'Edit'
+    ?
+      this.recipesService.updateRecipe(this.index, value.title, value.description, value.difficulty, ingredients)
+    :
+      this.recipesService.addRecipe(value.title, value.description, value.difficulty, ingredients);
+
     this.navCtrl.popToRoot();
   }
 
@@ -81,23 +84,7 @@ export class EditRecipePage implements OnInit {
         },
         {
           text: 'Remove all ingredients',
-          handler: () => {
-            const formArray: FormArray = <FormArray>this.recipeForm.get(
-              'ingredients'
-            );
-            const len = formArray.length;
-            if (len > 0) {
-              for (let i = len; i >= 0; i--) {
-                formArray.removeAt(i);
-              }
-            }
-            const toast = this.toastCtrl.create({
-              message: 'All Ingredients Deleted',
-              duration: 2000,
-              position: 'top'
-            });
-            toast.present();
-          },
+          handler: () => this.deleteAllIngredients(),
           role: 'destructive'
         },
         {
@@ -125,26 +112,40 @@ export class EditRecipePage implements OnInit {
         },
         {
           text: 'Add',
-          handler: data => {
-            if (!data.name.trim()) {
-              const toast = this.toastCtrl.create({
-                message: 'Please enter a valid value',
-                duration: 2000,
-                position: 'top'
-              });
-              toast.present();
-            } else {
-              (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required));
-              const toast = this.toastCtrl.create({
-                message: 'Item added!',
-                duration: 2000,
-                position: 'bottom'
-              });
-              toast.present();
-            }
-          }
+          handler: data => this.checkForData(data)
         }
       ]
+    });
+  }
+
+  checkForData(data: any) {
+    if (!data.name.trim()) {
+      const toast = this.createToast('Please enter a valid value', 2000, 'top');
+      toast.present();
+    } else {
+      (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required));
+      const toast = this.createToast('Item added!', 2000, 'bottom');
+      toast.present();
+    }
+  }
+
+  deleteAllIngredients() {
+    const formArray: FormArray = <FormArray>this.recipeForm.get('ingredients');
+    const len = formArray.length;
+    if (len > 0) {
+      for (let i = len; i >= 0; i--) {
+        formArray.removeAt(i);
+      }
+    }
+    const toast = this.createToast('All Ingredients Deleted', 2000, 'top');
+    toast.present();
+  }
+
+  createToast(message: string, duration:number, position: string) {
+    return this.toastCtrl.create({
+      message,
+      duration,
+      position
     });
   }
 }

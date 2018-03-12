@@ -1,16 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Ingredient } from "../models/ingredient.model";
+import { Ingredient } from '../models/ingredient.model';
 
-@Injectable()
 export class ShoppingListService {
+  private ingredients: Ingredient[] = [];
 
- private ingredients: Ingredient[] = [];
+  addItem = (name: string, amount: number) => this.ingredients.push(new Ingredient(name, amount));
 
-addToShoppingList = (name: string, amount: number) => this.ingredients.push(new Ingredient(name, amount));
+  addItems = (items: Ingredient[]) => this.ingredients.push(...items);
 
-addSeveralToShoppingList = (items: Ingredient[]) => this.ingredients.push(...items);
+  getItems = () => [...this.ingredients];
 
-getShoppingList = () => [...this.ingredients];
-
-removeFromShoppingList = (index: number) => this.ingredients.splice(index, 1);
+  removeItem = (index: number) => this.ingredients.splice(index, 1);
 }

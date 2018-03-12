@@ -16,11 +16,7 @@ export class RecipesListPage {
   ionViewWillEnter() {
     this.recipes = this.recipesService.getRecipes();
   }
-  onNewRecipe() {
-    this.navCtrl.push(EditRecipePage, { mode: 'New'});
-  }
+  onNewRecipe = () => this.navCtrl.push(EditRecipePage, { mode: 'New'});
 
-  onLoadRecipe(recipe: Recipe, index: number) {
-    this.navCtrl.push(RecipePage, { recipe, index });
-  }
+  onLoadRecipe = (recipe: Recipe, index: number) => this.navCtrl.push(RecipePage, { recipe, index });
 }

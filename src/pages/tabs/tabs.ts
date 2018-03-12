@@ -11,7 +11,6 @@ export class TabsPage {
 
   tab1Root = ShoppingListPage;
   tab2Root = RecipesListPage;
-  tab3Root = EditRecipePage;
 
   constructor() {
 

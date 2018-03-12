@@ -1,38 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { ShoppingListService } from '../../services/shopping-list.service';
 import { Ingredient } from '../../models/ingredient.model';
 
-@IonicPage()
 @Component({
   selector: 'page-shopping-list',
   templateUrl: 'shopping-list.html'
 })
-export class ShoppingListPage implements OnInit {
-  private shoppingListItems: Ingredient[];
+export class ShoppingListPage {
+  private listItems: Ingredient[];
 
   constructor(private shoppingService: ShoppingListService) {}
 
-  ngOnInit() {
-    this.loadList();
+  ionViewWillEnter() {
+    this.loadItems();
   }
+
   onAddItem(form: NgForm) {
-    this.shoppingService.addToShoppingList(
-      form.value.ingredientName,
-      form.value.ingredientAmount
-    );
-    this.loadList();
+    this.shoppingService.addItem(form.value.ingredientName, form.value.amount);
     form.reset();
+    this.loadItems();
   }
 
-  private loadList() {
-    this.shoppingListItems = this.shoppingService.getShoppingList();
+  onCheckItem(index: number) {
+    this.shoppingService.removeItem(index);
+    this.loadItems();
   }
 
-  private onDelete = (itemIndex: number) => {
-    this.shoppingService.removeFromShoppingList(itemIndex);
-    this.loadList();
-  }
-
+  private loadItems = () => this.listItems = this.shoppingService.getItems();
 }

@@ -6,12 +6,7 @@ import { Injectable } from '@angular/core';
 export class RecipesService {
   private recipes: Recipe[] = [];
 
-  addRecipe(
-    title: string,
-    description: string,
-    difficulty: string,
-    ingredients: Ingredient[]
-  ) {
+  addRecipe(title: string, description: string, difficulty: string, ingredients: Ingredient[]) {
     this.recipes.push(new Recipe(title, description, difficulty, ingredients));
   }
 
