@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <ion-buttons start>
       <button
@@ -16,5 +15,17 @@
 
 
 <ion-content padding>
-
+  <form #f="ngForm" (ngSubmit)="onSignIn(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
+        <ion-input type="email" name="emailAddress" required ngModel></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Password</ion-label>
+        <ion-input type="password"  name="password" required ngModel></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button block type="submit" [disabled]="!f.valid">Sign In</button>
+  </form>
 </ion-content>
