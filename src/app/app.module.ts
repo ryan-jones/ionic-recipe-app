@@ -17,6 +17,9 @@ import { RecipesService } from '../services/recipes.service';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
 import { AuthService } from '../services/auth.service';
+import { HttpClientModule } from '@angular/common/http'
+import { DBOptionsPage } from '../pages/db-options/shopping-options';
+import { DBOptionsService } from '../services/db-opts.service';
 
 @NgModule({
   declarations: [
@@ -27,10 +30,12 @@ import { AuthService } from '../services/auth.service';
     RecipesListPage,
     EditRecipePage,
     SigninPage,
-    SignupPage
+    SignupPage,
+    DBOptionsPage
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -42,7 +47,8 @@ import { AuthService } from '../services/auth.service';
     RecipesListPage,
     EditRecipePage,
     SigninPage,
-    SignupPage
+    SignupPage,
+    DBOptionsPage
   ],
   providers: [
     StatusBar,
@@ -50,6 +56,7 @@ import { AuthService } from '../services/auth.service';
     ShoppingListService,
     RecipesService,
     AuthService,
+    DBOptionsService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

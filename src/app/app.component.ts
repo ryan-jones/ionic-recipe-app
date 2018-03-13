@@ -5,6 +5,7 @@ import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
 import * as firebase from 'firebase';
 import { AuthService } from '../services/auth.service';
+import { RecipesListPage } from '../pages/recipes-list/recipes-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,6 +15,7 @@ export class MyApp {
   private rootPage: any = TabsPage;
   private signinPage: any = SigninPage;
   private signupPage: any = SignupPage;
+  private recipePage: any = RecipesListPage;
   isAuthenticated = false;
 
   constructor(platform: Platform, private menuCtrl: MenuController, private authService: AuthService) {
@@ -49,4 +51,5 @@ export class MyApp {
     this.menuCtrl.close();
     this.navEl.setRoot(SigninPage);
   }
+
 }

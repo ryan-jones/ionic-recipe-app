@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="recipe">
 
   <ion-navbar>
     <ion-title>{{ recipe.title }}</ion-title>
@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding *ngIf="recipe">
   <ion-grid>
     <ion-row>
       <ion-col text-center>
@@ -22,12 +22,12 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-list>
+        <ion-list *ngIf="recipe">
           <ion-item *ngFor="let ingredient of recipe.ingredients">{{ ingredient.name }}</ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="recipe.ingredients.length">
+    <ion-row *ngIf=" recipe && recipe.ingredients.length">
       <ion-col>
         <button
           (click)="onAddIngredients()"
@@ -36,7 +36,7 @@
           block>Add to List</button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="recipe.ingredients.length">
+    <ion-row *ngIf="recipe && recipe.ingredients.length">
       <ion-col>
         <button
           (click)="onEditRecipe()"
