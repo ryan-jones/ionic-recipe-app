@@ -27,6 +27,9 @@ export class DBOptionsService {
     const popover = this.popCtrl.create(DBOptionsPage);
     popover.present({ ev: event });
     popover.onDidDismiss(data => {
+      if (!data) {
+        return;
+      }
       loading.present()
       this.storeOrFetch(data, list, loading);
     })
@@ -67,8 +70,6 @@ export class DBOptionsService {
   }
 
   private storeRecipes(token: string, userId: string, list: string, loading: any) {
-    console.log('userId', userId);
-    console.log('list', list);
     const recipes = this.recipeService.recipes;
     this.http.put(`https://ionic-shopping-list-a7099.firebaseio.com/${userId}/${list}.json?auth=${token}`, recipes).subscribe(
       () => {
@@ -102,9 +103,13 @@ export class DBOptionsService {
   private fetchRecipes(token: string, userId: string, list: string, loading: any) {
     this.http.get(`https://ionic-shopping-list-a7099.firebaseio.com/${userId}/${list}.json?auth=${token}`).subscribe(
       (recipes: Recipe[]) => {
-        console.log('recipes', recipes);
         loading.dismiss();
         if (recipes) {
+          recipes.forEach(recipe => {
+            if (!recipe.hasOwnProperty('ingredients')) {
+              recipe.ingredients = [];
+            }
+          });
           this.recipeService.setFetchedRecipes(recipes);
         }
       },
